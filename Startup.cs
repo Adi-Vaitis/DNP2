@@ -31,9 +31,7 @@ namespace DNP2
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<FileContext>();
-            services.AddScoped<IUserService, InMemoryUserService>();
-            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+           services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("SecurityLevel3",

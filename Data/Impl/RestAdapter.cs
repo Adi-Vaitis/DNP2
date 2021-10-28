@@ -10,9 +10,14 @@ namespace DNP2.Data.Impl
 {
     public class RestAdapter : IDataAdapter
     {
+        private readonly HttpClient client;
+
+        public RestAdapter()
+        {
+            client = new HttpClient();
+        }
         public async Task<List<Family>> GetAllFamiliesAsync()
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:5001/families");
 
             if (!responseMessage.IsSuccessStatusCode)
@@ -31,7 +36,6 @@ namespace DNP2.Data.Impl
 
         public async Task<Family> GetFamilyWithAdultAsync(int adultId)
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync($"https://localhost:5001/families/adult/{adultId}");
             
             if (!responseMessage.IsSuccessStatusCode)
@@ -52,7 +56,6 @@ namespace DNP2.Data.Impl
 
         public async Task<Family> GetFamilyWithChildAsync(int childId)
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync($"https://localhost:5001/families/child/{childId}");
             
             if (!responseMessage.IsSuccessStatusCode)
@@ -72,7 +75,6 @@ namespace DNP2.Data.Impl
 
         public async Task<List<Adult>> GetAllAdultsAsync()
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:5001/adults");
 
             if (!responseMessage.IsSuccessStatusCode)
@@ -91,7 +93,6 @@ namespace DNP2.Data.Impl
 
         public async Task<Adult> GetAdultByIdAsync(int id)
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync($"https://localhost:5001/adults/{id}");
 
             if (!responseMessage.IsSuccessStatusCode)
@@ -109,7 +110,6 @@ namespace DNP2.Data.Impl
 
         public async Task AddAdultAsync(Adult adult)
         {
-            HttpClient client = new HttpClient();
             string adultAsJson = JsonSerializer.Serialize(adult);
             StringContent content = new StringContent(adultAsJson, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PostAsync("https://localhost:5001/adults", content);
@@ -121,7 +121,6 @@ namespace DNP2.Data.Impl
 
         public async Task RemoveAdultAsync(int id)
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.DeleteAsync($"https://localhost:5001/adults/{id}");
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -131,7 +130,6 @@ namespace DNP2.Data.Impl
 
         public async Task EditAdultAsync(Adult editedAdult)
         {
-            HttpClient client = new HttpClient();
             string adultAsJson = JsonSerializer.Serialize(editedAdult);
             StringContent content = new StringContent(adultAsJson, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PatchAsync("https://localhost:5001/adults", content);
@@ -143,7 +141,6 @@ namespace DNP2.Data.Impl
 
         public async Task<List<Child>> GetAllChildrenAsync()
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:5001/children");
             
             if (!responseMessage.IsSuccessStatusCode)
@@ -162,7 +159,6 @@ namespace DNP2.Data.Impl
 
         public async Task<Child> GetChildByIdAsync(int id)
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync($"https://localhost:5001/children/{id}");
 
             if (!responseMessage.IsSuccessStatusCode)
@@ -180,7 +176,6 @@ namespace DNP2.Data.Impl
 
         public async Task RemoveChildAsync(int id)
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.DeleteAsync($"https://localhost:5001/children/{id}");
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -190,7 +185,6 @@ namespace DNP2.Data.Impl
 
         public async Task EditChildAsync(Child editedChild)
         {
-            HttpClient client = new HttpClient();
             string adultAsJson = JsonSerializer.Serialize(editedChild);
             StringContent content = new StringContent(adultAsJson, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await client.PatchAsync("https://localhost:5001/children", content);
@@ -202,7 +196,6 @@ namespace DNP2.Data.Impl
 
         public async Task<List<Job>> GetAllJobsAsync()
         {
-            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:5001/jobs");
             
             if (!responseMessage.IsSuccessStatusCode)
