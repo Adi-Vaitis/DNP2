@@ -1,9 +1,10 @@
-﻿using DNP2.Models;
+﻿using System.Threading.Tasks;
+using DNP2.Models;
 
 namespace DNP2.Data
 {
     public interface IUserService
     {
-        User ValidateUser(string UserName, string Password);
+        Task<User> ValidateUserAsync(string UserName, string Password);
     }
 }

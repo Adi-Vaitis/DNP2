@@ -31,8 +31,8 @@ namespace DNP2.Authentication
                 string userAsJson = await jsRunTime.InvokeAsync<string>("sessionStorage.getItem", "currentUser");
                 if (!string.IsNullOrEmpty(userAsJson))
                 {
-                    User tmp = JsonSerializer.Deserialize<User>(userAsJson);
-                    ValidateLogin(tmp.UserName, tmp.Password);
+                    cachedUser = JsonSerializer.Deserialize<User>(userAsJson);
+                    identity = SetupClaimsForUser(cachedUser);
                 }
             }
             else
@@ -44,7 +44,7 @@ namespace DNP2.Authentication
             return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
         }
 
-        public void ValidateLogin(string username, string password)
+        public async Task ValidateLogin(string username, string password)
         {
             Console.WriteLine("Validating log in");
             if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
@@ -53,7 +53,7 @@ namespace DNP2.Authentication
             ClaimsIdentity identity = new ClaimsIdentity();
             try
             {
-                User user = userService.ValidateUser(username, password);
+                User user = await userService.ValidateUserAsync(username, password);
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
                 jsRunTime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
